@@ -10,7 +10,7 @@ export default defineConfig({
 	integrations: [
 		astroThemes(),
 		hmrIntegration({
-			directory: createResolver(import.meta.url).resolve("../packages/package-name/dist"),
+			directory: createResolver(import.meta.url).resolve("../packages/astro-themes/dist"),
 		}),
 	],
 	vite: {

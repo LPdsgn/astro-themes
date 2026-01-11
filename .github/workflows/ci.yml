@@ -21,4 +21,4 @@ jobs:
           node-version: 24.10.0
           cache: pnpm
       - run: pnpm install
-      - run: pnpm --filter package-name build
+      - run: pnpm --filter astro-themes build

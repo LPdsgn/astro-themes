@@ -2,7 +2,7 @@
 
 Perfect dark mode in Astro with no flash. An Astro integration that mirrors the behavior of [next-themes](https://github.com/pacocoursey/next-themes).
 
-To see how to get started, check out the [package README](./packages/package-name/README.md)
+To see how to get started, check out the [package README](./packages/astro-themes/README.md)
 
 ## Features
 

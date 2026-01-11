@@ -290,7 +290,7 @@ Or use CSS to show/hide content:
 This package is structured as a monorepo:
 
 - `playground` contains code for testing the package
-- `packages/package-name` contains the actual package
+- `packages/astro-themes` contains the actual package
 
 Install dependencies using pnpm:
 
@@ -304,7 +304,7 @@ Start the playground and package watcher:
 pnpm dev
 ```
 
-You can now edit files in `packages/package-name`. Please note that making changes to those files may require restarting the playground dev server.
+You can now edit files in `packages/astro-themes`. Please note that making changes to those files may require restarting the playground dev server.
 
 ## Licensing
 
