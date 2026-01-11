@@ -1,91 +1,174 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
-import ThemeSelect from "../components/ThemeSelect.astro";
 ---
 
-<Layout title="Astro Themes Demo">
-	<main class="container mx-auto px-4 py-16 max-w-4xl">
-		<div class="text-center mb-12">
-			<h1 class="text-5xl font-bold mb-4">
-				<span class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-					Astro Themes
-				</span>
-			</h1>
-			<p class="text-xl text-gray-600 dark:text-gray-400 mb-8">
-				Perfect dark mode in Astro with no flash. System preference, multiple themes, and sync across tabs.
-			</p>
+<Layout title="Astro Themes">
+	<!-- Header -->
+	<header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
+		<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+			<!-- Logo -->
+			<a href="/" class="flex items-center gap-2 font-bold text-lg">
+				<svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<circle cx="12" cy="12" r="4" />
+					<line x1="12" y1="2" x2="12" y2="6" />
+					<line x1="12" y1="18" x2="12" y2="22" />
+					<line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />
+					<line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />
+					<line x1="2" y1="12" x2="6" y2="12" />
+					<line x1="18" y1="12" x2="22" y2="12" />
+					<line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />
+					<line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
+				</svg>
+			</a>
 			
-			<div class="flex items-center justify-center gap-4 mb-8">
+			<!-- Nav -->
+			<nav class="flex items-center gap-8">
+				<a href="/" class="text-sm hover:text-muted-foreground transition-colors">Index</a>
+				<a href="#features" class="text-sm hover:text-muted-foreground transition-colors">About</a>
 				<ThemeToggle />
-				<ThemeSelect />
-			</div>
+			</nav>
 		</div>
+	</header>
 
-		<div class="grid md:grid-cols-2 gap-6 mb-12">
-			<div class="p-6 rounded-xl bg-gray-100 dark:bg-gray-800 transition-colors">
-				<h2 class="text-xl font-semibold mb-3">✅ No Flash</h2>
-				<p class="text-gray-600 dark:text-gray-400">
-					Script injection prevents any flash of wrong theme on page load, even with SSR/SSG.
-				</p>
+	<main>
+		<!-- Hero Section -->
+		<section class="pt-32 pb-16 px-6">
+			<div class="max-w-5xl mx-auto">
+				<h1 class="text-5xl md:text-7xl font-light tracking-tight leading-tight mb-16">
+					Welcome to Astro Themes.
+				</h1>
+				
+				<!-- Grid di 3 colonne con testo -->
+				<div class="grid md:grid-cols-3 gap-8 mb-12">
+					<div>
+						<p class="text-muted-foreground text-sm leading-relaxed mb-6">
+							Perfect dark mode in Astro with zero flash. System preference detection, 
+							multiple themes support, and sync across tabs - all out of the box.
+						</p>
+						<a 
+							href="#features" 
+							class="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground text-sm font-medium rounded-full hover:opacity-90 transition-opacity"
+						>
+							Learn More
+						</a>
+					</div>
+					
+					<div>
+						<p class="text-muted-foreground text-sm leading-relaxed mb-6">
+							Inspired by next-themes, built for Astro. Works with SSR, SSG, and hybrid 
+							rendering. No hydration mismatch, no flash of wrong theme.
+						</p>
+						<a 
+							href="https://github.com/LPdsgn/astro-theme-provider" 
+							target="_blank"
+							class="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground text-sm font-medium rounded-full hover:opacity-90 transition-opacity"
+						>
+							Visit Us ↗
+						</a>
+					</div>
+					
+					<div>
+						<p class="text-muted-foreground text-sm leading-relaxed">
+							CSS variables for theming, Tailwind CSS integration, and a minimal 
+							footprint. Just add the component to your layout and start building.
+						</p>
+					</div>
+				</div>
 			</div>
-			
-			<div class="p-6 rounded-xl bg-gray-100 dark:bg-gray-800 transition-colors">
-				<h2 class="text-xl font-semibold mb-3">🌐 System Preference</h2>
-				<p class="text-gray-600 dark:text-gray-400">
-					Automatically detects and respects the user's system color scheme preference.
-				</p>
-			</div>
-			
-			<div class="p-6 rounded-xl bg-gray-100 dark:bg-gray-800 transition-colors">
-				<h2 class="text-xl font-semibold mb-3">🔄 Sync Across Tabs</h2>
-				<p class="text-gray-600 dark:text-gray-400">
-					Theme changes are synced across all open tabs using localStorage events.
-				</p>
-			</div>
-			
-			<div class="p-6 rounded-xl bg-gray-100 dark:bg-gray-800 transition-colors">
-				<h2 class="text-xl font-semibold mb-3">🎨 Multiple Themes</h2>
-				<p class="text-gray-600 dark:text-gray-400">
-					Support for any number of custom themes, not just light and dark.
-				</p>
-			</div>
-			
-			<div class="p-6 rounded-xl bg-gray-100 dark:bg-gray-800 transition-colors">
-				<h2 class="text-xl font-semibold mb-3">⚡ Forced Themes</h2>
-				<p class="text-gray-600 dark:text-gray-400">
-					Force specific pages to use a particular theme regardless of user preference.
-				</p>
-			</div>
-			
-			<div class="p-6 rounded-xl bg-gray-100 dark:bg-gray-800 transition-colors">
-				<h2 class="text-xl font-semibold mb-3">🎯 Class or Data Attribute</h2>
-				<p class="text-gray-600 dark:text-gray-400">
-					Works with Tailwind CSS class-based dark mode or any data-* attribute.
-				</p>
-			</div>
-		</div>
+		</section>
 
-		<div class="p-6 rounded-xl bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 transition-colors">
-			<h2 class="text-xl font-semibold mb-4">Quick Start</h2>
-			<pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code>{`---
-import ThemeProvider from "astro-themes/ThemeProvider.astro";
+		<!-- Image Placeholder -->
+		<section class="px-6 pb-16">
+			<div class="max-w-5xl mx-auto">
+				<div class="aspect-video bg-muted rounded-lg flex items-center justify-center">
+					<span class="text-muted-foreground text-sm">Theme Preview Area</span>
+				</div>
+			</div>
+		</section>
+
+		<!-- Features Section -->
+		<section id="features" class="py-24 px-6 border-t border-border">
+			<div class="max-w-5xl mx-auto">
+				<h2 class="text-3xl font-light mb-12">Features</h2>
+				
+				<div class="grid md:grid-cols-2 gap-6">
+					<div class="p-6 rounded-lg border border-border bg-muted/30 hover:bg-muted/50 transition-colors">
+						<h3 class="font-medium mb-2">✅ No Flash</h3>
+						<p class="text-muted-foreground text-sm">
+							Script injection prevents any flash of wrong theme on page load, even with SSR/SSG.
+						</p>
+					</div>
+					
+					<div class="p-6 rounded-lg border border-border bg-muted/30 hover:bg-muted/50 transition-colors">
+						<h3 class="font-medium mb-2">🌐 System Preference</h3>
+						<p class="text-muted-foreground text-sm">
+							Automatically detects and respects the user's system color scheme preference.
+						</p>
+					</div>
+					
+					<div class="p-6 rounded-lg border border-border bg-muted/30 hover:bg-muted/50 transition-colors">
+						<h3 class="font-medium mb-2">🔄 Sync Across Tabs</h3>
+						<p class="text-muted-foreground text-sm">
+							Theme changes are synced across all open tabs using localStorage events.
+						</p>
+					</div>
+					
+					<div class="p-6 rounded-lg border border-border bg-muted/30 hover:bg-muted/50 transition-colors">
+						<h3 class="font-medium mb-2">🎨 Multiple Themes</h3>
+						<p class="text-muted-foreground text-sm">
+							Support for any number of custom themes, not just light and dark.
+						</p>
+					</div>
+					
+					<div class="p-6 rounded-lg border border-border bg-muted/30 hover:bg-muted/50 transition-colors">
+						<h3 class="font-medium mb-2">⚡ CSS Variables</h3>
+						<p class="text-muted-foreground text-sm">
+							Shadcn-style CSS variables for seamless theming with Tailwind CSS.
+						</p>
+					</div>
+					
+					<div class="p-6 rounded-lg border border-border bg-muted/30 hover:bg-muted/50 transition-colors">
+						<h3 class="font-medium mb-2">🛠️ Dev Toolbar</h3>
+						<p class="text-muted-foreground text-sm">
+							Built-in Astro Dev Toolbar app for quick theme switching during development.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Quick Start -->
+		<section class="py-24 px-6 border-t border-border">
+			<div class="max-w-5xl mx-auto">
+				<h2 class="text-3xl font-light mb-12">Quick Start</h2>
+				
+				<div class="bg-muted rounded-lg p-6 overflow-x-auto">
+					<pre class="text-sm"><code class="text-foreground">{`---
+import ThemeProvider from "astro-themes/component";
 ---
 
 <html>
   <head>
     <ThemeProvider attribute="class" />
   </head>
-  <body class="bg-white dark:bg-black">
-    <slot />
+  <body>
+    <!-- Your content -->
   </body>
 </html>`}</code></pre>
-		</div>
-
-		<div class="mt-12 text-center">
-			<p class="text-gray-500 dark:text-gray-500 text-sm">
-				Inspired by <a href="https://github.com/pacocoursey/next-themes" class="text-purple-600 dark:text-purple-400 hover:underline">next-themes</a>
-			</p>
-		</div>
+				</div>
+			</div>
+		</section>
 	</main>
+
+	<!-- Footer -->
+	<footer class="border-t border-border py-8 px-6">
+		<div class="max-w-5xl mx-auto flex items-center justify-between">
+			<p class="text-muted-foreground text-sm">©2025</p>
+			<nav class="flex items-center gap-6">
+				<a href="/" class="text-sm hover:text-muted-foreground transition-colors">Index</a>
+				<a href="#features" class="text-sm hover:text-muted-foreground transition-colors">About</a>
+			</nav>
+		</div>
+	</footer>
 </Layout>
