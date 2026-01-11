@@ -1,70 +1,40 @@
 # astro-themes
 
+![Astro](https://img.shields.io/badge/astro-%232C2052.svg?style=for-the-badge&logo=astro&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+
 Perfect dark mode in Astro with no flash. An Astro integration that mirrors the behavior of [next-themes](https://github.com/pacocoursey/next-themes).
 
 ## Features
 
 - ✅ **Perfect dark mode in 2 lines of code**
-- ✅ **System setting with `prefers-color-scheme`**
+- ✅ **No flash on load** (SSR and SSG)
+- ✅ **System preference with `prefers-color-scheme`**
 - ✅ **Themed browser UI with `color-scheme`**
-- ✅ **No flash on load** (both SSR and SSG)
 - ✅ **Sync theme across tabs and windows**
-- ✅ **Disable flashing when changing themes**
 - ✅ **Force pages to specific themes**
 - ✅ **Class or data attribute selector**
 - ✅ **TypeScript support**
 
-## Installation
+## Quick Start
 
-Install the integration **automatically** using the Astro CLI:
+### 1. Install
 
-```bash
+```sh frame="none"
 pnpm astro add astro-themes
 ```
 
-```bash
+```sh frame="none"
 npx astro add astro-themes
 ```
 
-```bash
+```sh frame="none"
 yarn astro add astro-themes
 ```
 
-Or install it **manually**:
+### 2. Add ThemeProvider
 
-1. Install the required dependencies
-
-```bash
-pnpm add astro-themes
-```
-
-```bash
-npm install astro-themes
-```
-
-```bash
-yarn add astro-themes
-```
-
-2. Add the integration to your astro config
-
-```diff
-+import astroThemes from "astro-themes";
-
-export default defineConfig({
-  integrations: [
-+    astroThemes(),
-  ],
-});
-```
-
-## Usage
-
-### Basic Setup
-
-Add the `ThemeProvider` component to your layout's `<head>`:
-
-```astro
+```astro frame="code" title="src/layouts/Layout.astro"
 ---
 import ThemeProvider from "astro-themes/ThemeProvider.astro";
 ---
@@ -80,15 +50,16 @@ import ThemeProvider from "astro-themes/ThemeProvider.astro";
 </html>
 ```
 
-That's it! Your Astro app fully supports dark mode, including System preference with `prefers-color-scheme`. The theme is also immediately synced between tabs.
+That's it! Your Astro app now supports dark mode with system preference detection and cross-tab sync.
 
-### HTML & CSS
+## Styling
 
-By default, `astro-themes` modifies the `data-theme` attribute on the `html` element:
+### CSS Variables
 
-```css
+By default, `astro-themes` sets `data-theme` on the `<html>` element:
+
+```css frame="code" title="src/styles/global.css"
 :root {
-  /* Your default theme */
   --background: white;
   --foreground: black;
 }
@@ -99,52 +70,45 @@ By default, `astro-themes` modifies the `data-theme` attribute on the `html` ele
 }
 ```
 
-### With TailwindCSS
+### TailwindCSS
 
-Set the attribute to `class` for Tailwind's class-based dark mode:
+For Tailwind's class-based dark mode, set `attribute="class"`:
 
 ```astro
 <ThemeProvider attribute="class" />
 ```
 
-In your `tailwind.config.js`:
+Then configure Tailwind:
 
-```js
+**Tailwind v4:**
+
+```css frame="code" title="src/styles/global.css" ins={3}
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+```
+
+**Tailwind v3:**
+
+```js frame="code" title="tailwind.config.js" ins={2}
 module.exports = {
-  darkMode: 'selector', // or 'class' for older versions
-  // ...
+  darkMode: 'selector',
 }
 ```
 
-Now you can use dark-mode specific classes:
+Now use dark-mode classes:
 
 ```html
 <h1 class="text-black dark:text-white">Hello</h1>
 ```
 
-### Changing the Theme
+## Changing the Theme
 
-Use the global `window.__ASTRO_THEMES__` object to interact with the theme:
-
-```html
-<button id="theme-toggle">Toggle Theme</button>
-
-<script>
-  document.getElementById('theme-toggle').addEventListener('click', () => {
-    const themes = window.__ASTRO_THEMES__;
-    if (themes) {
-      const newTheme = themes.resolvedTheme === 'light' ? 'dark' : 'light';
-      themes.setTheme(newTheme);
-    }
-  });
-</script>
-```
-
-Or use the exported helper functions:
+### Using Client Helpers (Recommended)
 
 ```astro
 <script>
-  import { setTheme, getResolvedTheme, onThemeChange, toggleTheme } from 'astro-themes/client';
+  import { setTheme, toggleTheme, onThemeChange, getResolvedTheme } from 'astro-themes/client';
   
   // Toggle between light and dark
   toggleTheme();
@@ -153,78 +117,91 @@ Or use the exported helper functions:
   setTheme('dark');
   
   // Get current resolved theme
-  const current = getResolvedTheme();
+  const current = getResolvedTheme(); // 'light' | 'dark'
   
   // Listen to theme changes
   const unsubscribe = onThemeChange(({ theme, resolvedTheme }) => {
-    console.log('Theme changed to:', theme, resolvedTheme);
+    console.log('Theme changed:', resolvedTheme);
   });
 </script>
 ```
 
-## API
+### Using the Global Object
+
+```html
+<button id="theme-toggle">Toggle</button>
+
+<script>
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const { resolvedTheme, setTheme } = window.__ASTRO_THEMES__;
+    setTheme(resolvedTheme === 'light' ? 'dark' : 'light');
+  });
+</script>
+```
+
+## Configuration
 
 ### ThemeProvider Props
 
-All your theme configuration is passed to `ThemeProvider`:
-
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `storageKey` | `string` | `'theme'` | Key used to store theme setting in localStorage |
-| `defaultTheme` | `string` | `'system'` | Default theme name. If `enableSystem` is false, defaults to `'light'` |
-| `forcedTheme` | `string` | - | Forced theme name for the current page (does not modify saved theme settings) |
-| `enableSystem` | `boolean` | `true` | Whether to switch between `dark` and `light` based on `prefers-color-scheme` |
-| `enableColorScheme` | `boolean` | `true` | Whether to indicate to browsers which color scheme is used for built-in UI |
-| `disableTransitionOnChange` | `boolean` | `false` | Optionally disable all CSS transitions when switching themes |
-| `themes` | `string[]` | `['light', 'dark']` | List of theme names |
-| `attribute` | `string \| string[]` | `'data-theme'` | HTML attribute modified based on the active theme. Accepts `class` and `data-*` |
-| `value` | `object` | - | Optional mapping of theme name to attribute value |
-| `nonce` | `string` | - | Optional nonce passed to the injected `script` tag for CSP |
-| `scriptProps` | `object` | - | Optional props to pass to the injected `script` tag |
+| `storageKey` | `string` | `'theme'` | localStorage key for theme setting |
+| `defaultTheme` | `string` | `'system'` | Default theme (`'light'`, `'dark'`, or `'system'`) |
+| `themes` | `string[]` | `['light', 'dark']` | Available theme names |
+| `attribute` | `string \| string[]` | `'data-theme'` | HTML attribute to set. Use `'class'` for Tailwind |
+| `value` | `object` | - | Map theme names to custom attribute values |
+| `forcedTheme` | `string` | - | Force a specific theme on this page |
+| `enableSystem` | `boolean` | `true` | Enable system preference detection |
+| `enableColorScheme` | `boolean` | `true` | Set `color-scheme` CSS property |
+| `disableTransitionOnChange` | `boolean` | `false` | Disable transitions when switching |
+| `nonce` | `string` | - | CSP nonce for the script tag |
+| `scriptProps` | `object` | - | Additional props for the script tag |
 
-### Theme State (window.__ASTRO_THEMES__)
+### Integration Options
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `theme` | `string` | Active theme name |
-| `resolvedTheme` | `string` | If the active theme is "system", returns whether it resolved to "dark" or "light" |
-| `systemTheme` | `'dark' \| 'light'` | System theme preference, regardless of active theme |
-| `forcedTheme` | `string \| undefined` | Forced page theme or undefined |
-| `themes` | `string[]` | List of themes (with "system" appended if `enableSystem` is true) |
-| `setTheme(theme)` | `function` | Function to update the theme |
+For centralized configuration without using `ThemeProvider`, configure the integration directly:
 
-### Client Helpers
+```js frame="code" title="astro.config.mjs"
+import { defineConfig } from "astro/config";
+import astroThemes from "astro-themes";
 
-Import from `astro-themes/client`:
+export default defineConfig({
+  integrations: [
+    astroThemes({
+      injectScript: true, // Auto-inject theme script
+      defaultProps: {
+        attribute: "class",
+        defaultTheme: "system",
+        themes: ["light", "dark"],
+      },
+      devToolbar: true, // Enable Dev Toolbar App
+    }),
+  ],
+});
+```
 
-| Function | Description |
-|----------|-------------|
-| `getTheme()` | Get the current theme state |
-| `setTheme(theme)` | Set the theme (string or function) |
-| `getResolvedTheme()` | Get the resolved theme |
-| `getSystemTheme()` | Get the system theme preference |
-| `isForcedTheme()` | Check if theme is forced |
-| `getThemes()` | Get list of available themes |
-| `onThemeChange(callback)` | Subscribe to theme changes (returns unsubscribe function) |
-| `toggleTheme()` | Toggle between light and dark themes |
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `injectScript` | `boolean` | `false` | Auto-inject theme script (no `ThemeProvider` needed) |
+| `defaultProps` | `object` | `{}` | Default theme configuration (same options as **[ThemeProvider Props](#themeprovider-props)**) |
+| `devToolbar` | `boolean` | `true` | Enable the Dev Toolbar App |
+
+> **Tip:** Use `injectScript: true` for consistent settings across all pages. You can still use `ThemeProvider` with `forcedTheme` on specific pages.
 
 ## Examples
 
-### Force a Page to a Specific Theme
+### Force a Page Theme
 
-```astro
+```astro frame="code" title="src/pages/dark-only.astro"
 ---
 import ThemeProvider from "astro-themes/ThemeProvider.astro";
+import Layout from "../layouts/Layout.astro";
 ---
 
-<html>
-  <head>
-    <ThemeProvider forcedTheme="dark" />
-  </head>
-  <body class="dark-only-page">
-    <!-- This page is always dark -->
-  </body>
-</html>
+<Layout>
+  <ThemeProvider forcedTheme="dark" />
+  <!-- This page is always dark -->
+</Layout>
 ```
 
 ### Multiple Themes
@@ -238,79 +215,89 @@ import ThemeProvider from "astro-themes/ThemeProvider.astro";
 ```astro
 <ThemeProvider 
   attribute="data-theme"
-  value={{ 
-    light: 'light-mode',
-    dark: 'dark-mode'
-  }} 
+  value={{ light: 'light-mode', dark: 'dark-mode' }} 
 />
 ```
 
-This will set `data-theme="light-mode"` or `data-theme="dark-mode"`.
-
-### Disable Transitions on Theme Change
+### Disable Transitions on Change
 
 ```astro
 <ThemeProvider disableTransitionOnChange />
 ```
 
-### With Cloudflare Rocket Loader
+### Cloudflare Rocket Loader
 
 ```astro
 <ThemeProvider scriptProps={{ 'data-cfasync': 'false' }} />
 ```
 
+## API Reference
+
+### Client Helpers
+
+Import from `astro-themes/client`:
+
+| Function | Description |
+|----------|-------------|
+| `getTheme()` | Get complete theme state object |
+| `setTheme(theme)` | Set theme (string or callback function) |
+| `toggleTheme()` | Toggle between light and dark |
+| `getResolvedTheme()` | Get resolved theme (`'light'` or `'dark'`) |
+| `getSystemTheme()` | Get system preference |
+| `getThemes()` | Get list of available themes |
+| `isForcedTheme()` | Check if current page has forced theme |
+| `onThemeChange(callback)` | Subscribe to changes (returns unsubscribe) |
+
+### Theme State Object
+
+Available via `window.__ASTRO_THEMES__`:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `theme` | `string` | Current theme name |
+| `resolvedTheme` | `string` | Resolved theme (`'light'` or `'dark'`) |
+| `systemTheme` | `'light' \| 'dark'` | System preference |
+| `forcedTheme` | `string \| undefined` | Forced theme if set |
+| `themes` | `string[]` | Available themes |
+| `setTheme(theme)` | `function` | Update the theme |
+
 ## Avoiding Hydration Mismatch
 
-Because we cannot know the theme on the server, avoid rendering theme-dependent UI until the client has mounted:
+Since the theme is unknown on the server, use CSS to conditionally show content:
+
+```css
+[data-theme='dark'] .light-only { display: none; }
+[data-theme='light'] .dark-only { display: none; }
+```
+
+Or check in client-side scripts:
 
 ```astro
 <script>
-  // Only run on client
-  if (typeof window !== 'undefined' && window.__ASTRO_THEMES__) {
-    const theme = window.__ASTRO_THEMES__.resolvedTheme;
+  if (window.__ASTRO_THEMES__) {
+    const { resolvedTheme } = window.__ASTRO_THEMES__;
     // Update UI based on theme
   }
 </script>
-```
-
-Or use CSS to show/hide content:
-
-```css
-[data-theme='dark'] .light-only {
-  display: none;
-}
-
-[data-theme='light'] .dark-only {
-  display: none;
-}
 ```
 
 ## Contributing
 
 This package is structured as a monorepo:
 
-- `playground` contains code for testing the package
-- `packages/astro-themes` contains the actual package
-
-Install dependencies using pnpm:
+- `playground` – Development testing environment
+- `packages/astro-themes` – The integration package
 
 ```bash
 pnpm i --frozen-lockfile
-```
-
-Start the playground and package watcher:
-
-```bash
 pnpm dev
 ```
 
-You can now edit files in `packages/astro-themes`. Please note that making changes to those files may require restarting the playground dev server.
+## License
 
-## Licensing
-
-[MIT Licensed](https://github.com/your-username/astro-themes/blob/main/LICENSE). Made with ❤️.
+[MIT Licensed](https://github.com/LPdsgn/astro-themes/blob/main/LICENSE). Made with ❤️
 
 ## Acknowledgements
 
 - Inspired by [next-themes](https://github.com/pacocoursey/next-themes) by Paco Coursey
-- Created using [astro-integration-template](https://github.com/florian-lefebvre/astro-integration-template)
+- Built with [astro-integration-kit](https://github.com/florian-lefebvre/astro-integration-kit) by Florian Lefebvre

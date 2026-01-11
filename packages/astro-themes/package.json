@@ -45,10 +45,10 @@
 	"author": "",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/your-username/astro-themes.git"
+		"url": "git+https://github.com/LPdsgn/astro-themes.git"
 	},
-	"bugs": "https://github.com/your-username/astro-themes/issues",
-	"homepage": "https://github.com/your-username/astro-themes#readme",
+	"bugs": "https://github.com/LPdsgn/astro-themes/issues",
+	"homepage": "https://github.com/LPdsgn/astro-themes#readme",
 	"license": "MIT",
 	"peerDependencies": {
 		"astro": "^5.1.3"

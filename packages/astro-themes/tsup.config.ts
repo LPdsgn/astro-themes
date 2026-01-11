@@ -1,5 +1,5 @@
 import { defineConfig } from "tsup";
-import { peerDependencies } from "./package.json";
+import pkg from "./package.json";
 
 export default defineConfig((options) => {
 	const dev = !!options.watch;
@@ -19,7 +19,7 @@ export default defineConfig((options) => {
 		clean: true,
 		splitting: false,
 		minify: !dev,
-		external: [...Object.keys(peerDependencies)],
+		external: [...Object.keys(pkg.peerDependencies || {})],
 		tsconfig: "tsconfig.json",
 		// Copy .astro files to dist
 		async onSuccess() {
