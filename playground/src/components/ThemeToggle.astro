@@ -1,0 +1,24 @@
+---
+// ThemeToggle component - demonstrates theme switching
+---
+
+<button
+  id="theme-toggle"
+  class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+  aria-label="Toggle theme"
+>
+  <span class="dark:hidden">🌙 Dark</span>
+  <span class="hidden dark:inline">☀️ Light</span>
+</button>
+
+<script>
+  const button = document.getElementById('theme-toggle');
+  
+  button?.addEventListener('click', () => {
+    const themes = window.__ASTRO_THEMES__;
+    if (themes) {
+      const newTheme = themes.resolvedTheme === 'light' ? 'dark' : 'light';
+      themes.setTheme(newTheme);
+    }
+  });
+</script>

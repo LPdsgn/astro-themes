@@ -1,0 +1,91 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import ThemeSelect from "../components/ThemeSelect.astro";
+---
+
+<Layout title="Astro Themes Demo">
+	<main class="container mx-auto px-4 py-16 max-w-4xl">
+		<div class="text-center mb-12">
+			<h1 class="text-5xl font-bold mb-4">
+				<span class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+					Astro Themes
+				</span>
+			</h1>
+			<p class="text-xl text-gray-600 dark:text-gray-400 mb-8">
+				Perfect dark mode in Astro with no flash. System preference, multiple themes, and sync across tabs.
+			</p>
+			
+			<div class="flex items-center justify-center gap-4 mb-8">
+				<ThemeToggle />
+				<ThemeSelect />
+			</div>
+		</div>
+
+		<div class="grid md:grid-cols-2 gap-6 mb-12">
+			<div class="p-6 rounded-xl bg-gray-100 dark:bg-gray-800 transition-colors">
+				<h2 class="text-xl font-semibold mb-3">✅ No Flash</h2>
+				<p class="text-gray-600 dark:text-gray-400">
+					Script injection prevents any flash of wrong theme on page load, even with SSR/SSG.
+				</p>
+			</div>
+			
+			<div class="p-6 rounded-xl bg-gray-100 dark:bg-gray-800 transition-colors">
+				<h2 class="text-xl font-semibold mb-3">🌐 System Preference</h2>
+				<p class="text-gray-600 dark:text-gray-400">
+					Automatically detects and respects the user's system color scheme preference.
+				</p>
+			</div>
+			
+			<div class="p-6 rounded-xl bg-gray-100 dark:bg-gray-800 transition-colors">
+				<h2 class="text-xl font-semibold mb-3">🔄 Sync Across Tabs</h2>
+				<p class="text-gray-600 dark:text-gray-400">
+					Theme changes are synced across all open tabs using localStorage events.
+				</p>
+			</div>
+			
+			<div class="p-6 rounded-xl bg-gray-100 dark:bg-gray-800 transition-colors">
+				<h2 class="text-xl font-semibold mb-3">🎨 Multiple Themes</h2>
+				<p class="text-gray-600 dark:text-gray-400">
+					Support for any number of custom themes, not just light and dark.
+				</p>
+			</div>
+			
+			<div class="p-6 rounded-xl bg-gray-100 dark:bg-gray-800 transition-colors">
+				<h2 class="text-xl font-semibold mb-3">⚡ Forced Themes</h2>
+				<p class="text-gray-600 dark:text-gray-400">
+					Force specific pages to use a particular theme regardless of user preference.
+				</p>
+			</div>
+			
+			<div class="p-6 rounded-xl bg-gray-100 dark:bg-gray-800 transition-colors">
+				<h2 class="text-xl font-semibold mb-3">🎯 Class or Data Attribute</h2>
+				<p class="text-gray-600 dark:text-gray-400">
+					Works with Tailwind CSS class-based dark mode or any data-* attribute.
+				</p>
+			</div>
+		</div>
+
+		<div class="p-6 rounded-xl bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 transition-colors">
+			<h2 class="text-xl font-semibold mb-4">Quick Start</h2>
+			<pre class="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code>{`---
+import ThemeProvider from "astro-themes/ThemeProvider.astro";
+---
+
+<html>
+  <head>
+    <ThemeProvider attribute="class" />
+  </head>
+  <body class="bg-white dark:bg-black">
+    <slot />
+  </body>
+</html>`}</code></pre>
+		</div>
+
+		<div class="mt-12 text-center">
+			<p class="text-gray-500 dark:text-gray-500 text-sm">
+				Inspired by <a href="https://github.com/pacocoursey/next-themes" class="text-purple-600 dark:text-purple-400 hover:underline">next-themes</a>
+			</p>
+		</div>
+	</main>
+</Layout>

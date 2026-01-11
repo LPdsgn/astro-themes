@@ -1,0 +1,223 @@
+---
+import type { ThemeProviderProps } from "../types.js";
+import { getMinifiedInlineScript } from "../script.js";
+
+interface Props extends ThemeProviderProps {}
+
+const {
+  storageKey = "theme",
+  defaultTheme: defaultThemeProp,
+  forcedTheme,
+  enableSystem = true,
+  enableColorScheme = true,
+  disableTransitionOnChange = false,
+  themes = ["light", "dark"],
+  attribute = "data-theme",
+  value,
+  nonce,
+  scriptProps = {},
+} = Astro.props;
+
+// If enableSystem is false and no defaultTheme is set, default to 'light'
+const defaultTheme = defaultThemeProp ?? (enableSystem ? "system" : "light");
+
+// Generate the inline script to prevent flash
+const inlineScript = getMinifiedInlineScript(
+  attribute,
+  storageKey,
+  defaultTheme,
+  forcedTheme,
+  themes,
+  value,
+  enableSystem,
+  enableColorScheme
+);
+
+// Build script attributes
+const scriptAttrs: Record<string, unknown> = {
+  ...scriptProps,
+};
+
+if (nonce) {
+  scriptAttrs.nonce = nonce;
+}
+---
+
+{/* Inline script to prevent flash - runs before page renders */}
+<script is:inline set:html={inlineScript} {...scriptAttrs}></script>
+
+{/* Client-side script for theme management */}
+<script
+  is:inline
+  data-astro-themes-config
+  data-storage-key={storageKey}
+  data-default-theme={defaultTheme}
+  data-forced-theme={forcedTheme}
+  data-enable-system={enableSystem}
+  data-enable-color-scheme={enableColorScheme}
+  data-disable-transition-on-change={disableTransitionOnChange}
+  data-themes={JSON.stringify(themes)}
+  data-attribute={JSON.stringify(attribute)}
+  data-value={value ? JSON.stringify(value) : undefined}
+>
+(function() {
+  // Get configuration from script element
+  var configEl = document.querySelector('script[data-astro-themes-config]');
+  if (!configEl) return;
+
+  var storageKey = configEl.getAttribute('data-storage-key') || 'theme';
+  var defaultTheme = configEl.getAttribute('data-default-theme') || 'system';
+  var forcedTheme = configEl.getAttribute('data-forced-theme') || undefined;
+  var enableSystem = configEl.getAttribute('data-enable-system') === 'true';
+  var enableColorScheme = configEl.getAttribute('data-enable-color-scheme') === 'true';
+  var disableTransitionOnChange = configEl.getAttribute('data-disable-transition-on-change') === 'true';
+  var themes = JSON.parse(configEl.getAttribute('data-themes') || '["light","dark"]');
+  var attribute = JSON.parse(configEl.getAttribute('data-attribute') || '"data-theme"');
+  var value = configEl.getAttribute('data-value') ? JSON.parse(configEl.getAttribute('data-value')) : undefined;
+
+  var el = document.documentElement;
+  var systemThemes = ['light', 'dark'];
+  var MEDIA = '(prefers-color-scheme: dark)';
+
+  function getSystemTheme() {
+    return window.matchMedia(MEDIA).matches ? 'dark' : 'light';
+  }
+
+  function getStoredTheme() {
+    try {
+      return localStorage.getItem(storageKey) || defaultTheme;
+    } catch (e) {
+      return defaultTheme;
+    }
+  }
+
+  function saveTheme(theme) {
+    try {
+      localStorage.setItem(storageKey, theme);
+    } catch (e) {
+      // localStorage not available
+    }
+  }
+
+  function disableAnimation() {
+    var css = document.createElement('style');
+    css.appendChild(
+      document.createTextNode(
+        '*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'
+      )
+    );
+    document.head.appendChild(css);
+
+    return function() {
+      // Force restyle
+      (function() { return window.getComputedStyle(document.body); })();
+      // Wait for next tick before removing
+      setTimeout(function() {
+        document.head.removeChild(css);
+      }, 1);
+    };
+  }
+
+  function applyTheme(theme) {
+    var resolved = theme;
+    if (theme === 'system' && enableSystem) {
+      resolved = getSystemTheme();
+    }
+
+    var enable = disableTransitionOnChange ? disableAnimation() : null;
+
+    var attributes = Array.isArray(attribute) ? attribute : [attribute];
+    var name = value && value[resolved] ? value[resolved] : resolved;
+    var attrs = !value ? themes : Object.values(value);
+
+    attributes.forEach(function(attr) {
+      if (attr === 'class') {
+        el.classList.remove.apply(el.classList, attrs);
+        if (name) el.classList.add(name);
+      } else if (attr.startsWith('data-')) {
+        if (name) {
+          el.setAttribute(attr, name);
+        } else {
+          el.removeAttribute(attr);
+        }
+      }
+    });
+
+    if (enableColorScheme) {
+      var colorScheme = systemThemes.indexOf(resolved) !== -1 ? resolved : null;
+      el.style.colorScheme = colorScheme || '';
+    }
+
+    if (enable) enable();
+  }
+
+  // Current state
+  var currentTheme = forcedTheme || getStoredTheme();
+  var resolvedTheme = currentTheme === 'system' ? getSystemTheme() : currentTheme;
+
+  // Create the theme state object
+  var themeState = {
+    get theme() { return forcedTheme || currentTheme; },
+    get resolvedTheme() { return forcedTheme || (currentTheme === 'system' ? getSystemTheme() : currentTheme); },
+    get systemTheme() { return getSystemTheme(); },
+    get forcedTheme() { return forcedTheme; },
+    get themes() { return enableSystem ? themes.concat(['system']) : themes; },
+    setTheme: function(newTheme) {
+      if (forcedTheme) return; // No-op when forced
+      
+      if (typeof newTheme === 'function') {
+        newTheme = newTheme(currentTheme);
+      }
+      
+      currentTheme = newTheme;
+      saveTheme(newTheme);
+      applyTheme(newTheme);
+      
+      // Dispatch event for listeners
+      window.dispatchEvent(new CustomEvent('astro-themes:change', { 
+        detail: { theme: newTheme, resolvedTheme: newTheme === 'system' ? getSystemTheme() : newTheme } 
+      }));
+    }
+  };
+
+  // Expose to window
+  window.__ASTRO_THEMES__ = themeState;
+
+  // Listen for system theme changes
+  if (enableSystem) {
+    var media = window.matchMedia(MEDIA);
+    var handleMediaChange = function(e) {
+      if (currentTheme === 'system') {
+        applyTheme('system');
+        window.dispatchEvent(new CustomEvent('astro-themes:change', { 
+          detail: { theme: 'system', resolvedTheme: getSystemTheme() } 
+        }));
+      }
+    };
+    
+    // Use modern API if available, fall back to deprecated one
+    if (media.addEventListener) {
+      media.addEventListener('change', handleMediaChange);
+    } else {
+      media.addListener(handleMediaChange);
+    }
+  }
+
+  // Listen for storage changes (sync across tabs)
+  window.addEventListener('storage', function(e) {
+    if (e.key !== storageKey) return;
+    
+    if (!e.newValue) {
+      themeState.setTheme(defaultTheme);
+    } else if (e.newValue !== currentTheme) {
+      currentTheme = e.newValue;
+      applyTheme(e.newValue);
+      window.dispatchEvent(new CustomEvent('astro-themes:change', { 
+        detail: { theme: e.newValue, resolvedTheme: e.newValue === 'system' ? getSystemTheme() : e.newValue } 
+      }));
+    }
+  });
+})();
+</script>
+
+<slot />
