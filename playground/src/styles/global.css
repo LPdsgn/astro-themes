@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin '@tailwindcss/typography';
 
 /* ============================================
    CSS Variables for Theming (shadcn-style)

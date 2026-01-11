@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import ThemeProvider from "astro-themes/component";
+import ThemeToggle from "../components/ThemeToggle.astro";
 
 interface Props {
 	title: string;
@@ -21,6 +22,46 @@ const { title } = Astro.props;
 		<ThemeProvider attribute="class" />
 	</head>
 	<body class="min-h-screen antialiased">
-		<slot />
+		<!-- Header -->
+		<header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
+			<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+				<!-- Logo -->
+				<a href="/" class="flex items-center gap-2 font-bold text-lg">
+					<svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<circle cx="12" cy="12" r="4" />
+						<line x1="12" y1="2" x2="12" y2="6" />
+						<line x1="12" y1="18" x2="12" y2="22" />
+						<line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />
+						<line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />
+						<line x1="2" y1="12" x2="6" y2="12" />
+						<line x1="18" y1="12" x2="22" y2="12" />
+						<line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />
+						<line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
+					</svg>
+				</a>
+				
+				<!-- Nav -->
+				<nav class="flex items-center gap-8">
+					<a href="/" class="text-sm hover:text-muted-foreground transition-colors">Index</a>
+					<a href="/readme" class="text-sm hover:text-muted-foreground transition-colors">Readme</a>
+					<ThemeToggle />
+				</nav>
+			</div>
+		</header>
+
+		<main class="pt-20">
+			<slot />
+		</main>
+
+		<!-- Footer -->
+		<footer class="border-t border-border py-8 px-6">
+			<div class="max-w-5xl mx-auto flex items-center justify-between">
+				<p class="text-muted-foreground text-sm">©2025</p>
+				<nav class="flex items-center gap-6">
+					<a href="/" class="text-sm hover:text-muted-foreground transition-colors">Index</a>
+					<a href="#features" class="text-sm hover:text-muted-foreground transition-colors">About</a>
+				</nav>
+			</div>
+		</footer>
 	</body>
 </html>

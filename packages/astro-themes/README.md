@@ -1,4 +1,4 @@
-# `astro-themes`
+# astro-themes
 
 Perfect dark mode in Astro with no flash. An Astro integration that mirrors the behavior of [next-themes](https://github.com/pacocoursey/next-themes).
 
