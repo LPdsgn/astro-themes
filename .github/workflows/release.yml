@@ -8,7 +8,7 @@ on:
 jobs:
   release:
     name: Release
-    if: ${{ github.repository_owner == 'your-name' }}
+    if: ${{ github.repository_owner == 'LPdsgn' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
