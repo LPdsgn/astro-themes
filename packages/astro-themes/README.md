@@ -21,22 +21,22 @@ Perfect dark mode in Astro with no flash. An Astro integration that mirrors the 
 ### 1. Install
 
 ```sh frame="none"
-pnpm astro add astro-themes
+pnpm astro add @lpdsgn/astro-themes
 ```
 
 ```sh frame="none"
-npx astro add astro-themes
+npx astro add @lpdsgn/astro-themes
 ```
 
 ```sh frame="none"
-yarn astro add astro-themes
+yarn astro add @lpdsgn/astro-themes
 ```
 
 ### 2. Add ThemeProvider
 
 ```astro frame="code" title="src/layouts/Layout.astro"
 ---
-import ThemeProvider from "astro-themes/ThemeProvider.astro";
+import { ThemeProvider } from "@lpdsgn/astro-themes/components";
 ---
 
 <!doctype html>
@@ -56,7 +56,7 @@ That's it! Your Astro app now supports dark mode with system preference detectio
 
 ### CSS Variables
 
-By default, `astro-themes` sets `data-theme` on the `<html>` element:
+By default, `@lpdsgn/astro-themes` sets `data-theme` on the `<html>` element:
 
 ```css frame="code" title="src/styles/global.css"
 :root {
@@ -108,7 +108,7 @@ Now use dark-mode classes:
 
 ```astro
 <script>
-  import { setTheme, toggleTheme, onThemeChange, getResolvedTheme } from 'astro-themes/client';
+  import { setTheme, toggleTheme, onThemeChange, getResolvedTheme } from '@lpdsgn/astro-themes';
   
   // Toggle between light and dark
   toggleTheme();
@@ -163,7 +163,7 @@ For centralized configuration without using `ThemeProvider`, configure the integ
 
 ```js frame="code" title="astro.config.mjs"
 import { defineConfig } from "astro/config";
-import astroThemes from "astro-themes";
+import astroThemes from "@lpdsgn/astro-themes";
 
 export default defineConfig({
   integrations: [
@@ -194,7 +194,7 @@ export default defineConfig({
 
 ```astro frame="code" title="src/pages/dark-only.astro"
 ---
-import ThemeProvider from "astro-themes/ThemeProvider.astro";
+import { ThemeProvider } from "@lpdsgn/astro-themes/components";
 import Layout from "../layouts/Layout.astro";
 ---
 
@@ -235,7 +235,7 @@ import Layout from "../layouts/Layout.astro";
 
 ### Client Helpers
 
-Import from `astro-themes/client`:
+Import from `@lpdsgn/astro-themes`:
 
 | Function | Description |
 |----------|-------------|

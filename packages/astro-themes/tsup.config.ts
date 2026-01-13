@@ -41,6 +41,12 @@ export default defineConfig((options) => {
 					);
 				}
 			}
+
+			// Create components/index.js that re-exports the .astro components
+			const componentIndex = `// Auto-generated - re-exports Astro components
+export { default as ThemeProvider } from "./ThemeProvider.astro";
+`;
+			await fs.writeFile("dist/components/index.js", componentIndex);
 		},
 	};
 });
