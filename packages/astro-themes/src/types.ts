@@ -115,18 +115,6 @@ export interface ThemeState {
  */
 export interface AstroThemesConfig {
 	/**
-	 * Inject the flash-prevention script automatically via integration
-	 * When true, you don't need to use ThemeProvider component for basic setup
-	 * @default false
-	 */
-	injectScript?: boolean;
-
-	/**
-	 * Default props for the ThemeProvider component or injected script
-	 */
-	defaultProps?: Partial<ThemeProviderProps>;
-
-	/**
 	 * Enable the Dev Toolbar App for theme switching during development
 	 * @default true
 	 */

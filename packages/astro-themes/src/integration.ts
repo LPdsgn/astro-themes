@@ -1,41 +1,10 @@
 import { defineIntegration } from "astro-integration-kit";
 import { z } from "astro/zod";
 import type { AstroThemesConfig, ThemeProviderProps } from "./types.js";
-import { getMinifiedInlineScript } from "./script.js";
-
-// Default configuration values
-const DEFAULT_STORAGE_KEY = "theme";
-const DEFAULT_THEME = "system";
-const DEFAULT_THEMES = ["light", "dark"];
-const DEFAULT_ATTRIBUTE = "data-theme";
 
 // Options schema for the integration
 const optionsSchema = z
 	.object({
-		/**
-		 * Inject the flash-prevention script automatically via integration
-		 * When true, you don't need to use ThemeProvider component
-		 * @default false
-		 */
-		injectScript: z.boolean().default(false),
-		/**
-		 * Default theme configuration used when injectScript is true
-		 */
-		defaultProps: z
-			.object({
-				storageKey: z.string().default(DEFAULT_STORAGE_KEY),
-				defaultTheme: z.string().default(DEFAULT_THEME),
-				forcedTheme: z.string().optional(),
-				enableSystem: z.boolean().default(true),
-				enableColorScheme: z.boolean().default(true),
-				disableTransitionOnChange: z.boolean().default(false),
-				themes: z.array(z.string()).default(DEFAULT_THEMES),
-				attribute: z
-					.union([z.string(), z.array(z.string())])
-					.default(DEFAULT_ATTRIBUTE),
-				value: z.record(z.string()).optional(),
-			})
-			.default({}),
 		/**
 		 * Enable the Dev Toolbar App for theme switching during development
 		 * @default true
@@ -52,28 +21,10 @@ export const integration = defineIntegration({
 			hooks: {
 				"astro:config:setup": ({
 					logger,
-					injectScript,
 					addDevToolbarApp,
 					command,
 				}) => {
 					logger.info("astro-themes initialized");
-
-					// Inject flash-prevention script if enabled
-					if (options.injectScript) {
-						const props = options.defaultProps;
-						const script = getMinifiedInlineScript(
-							props.attribute,
-							props.storageKey,
-							props.defaultTheme,
-							props.forcedTheme,
-							props.themes,
-							props.value,
-							props.enableSystem,
-							props.enableColorScheme
-						);
-						injectScript("head-inline", script);
-						logger.info("Flash-prevention script injected via integration");
-					}
 
 					// Add Dev Toolbar App in dev mode
 					if (options.devToolbar && command === "dev") {

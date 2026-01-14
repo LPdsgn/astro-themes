@@ -159,7 +159,7 @@ Now use dark-mode classes:
 
 ### Integration Options
 
-For centralized configuration without using `ThemeProvider`, configure the integration directly:
+The integration can be configured in your `astro.config.mjs`:
 
 ```js frame="code" title="astro.config.mjs"
 import { defineConfig } from "astro/config";
@@ -168,13 +168,7 @@ import astroThemes from "@lpdsgn/astro-themes";
 export default defineConfig({
   integrations: [
     astroThemes({
-      injectScript: true, // Auto-inject theme script
-      defaultProps: {
-        attribute: "class",
-        defaultTheme: "system",
-        themes: ["light", "dark"],
-      },
-      devToolbar: true, // Enable Dev Toolbar App
+      devToolbar: true, // Enable Dev Toolbar App (default: true)
     }),
   ],
 });
@@ -182,11 +176,7 @@ export default defineConfig({
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `injectScript` | `boolean` | `false` | Auto-inject theme script (no `ThemeProvider` needed) |
-| `defaultProps` | `object` | `{}` | Default theme configuration (same options as **[ThemeProvider Props](#themeprovider-props)**) |
-| `devToolbar` | `boolean` | `true` | Enable the Dev Toolbar App |
-
-> **Tip:** Use `injectScript: true` for consistent settings across all pages. You can still use `ThemeProvider` with `forcedTheme` on specific pages.
+| `devToolbar` | `boolean` | `true` | Enable the Dev Toolbar App for theme switching during development |
 
 ## Examples
 

@@ -4,8 +4,7 @@ import { createResolver } from "astro-integration-kit";
 import { hmrIntegration } from "astro-integration-kit/dev";
 import expressiveCode from "astro-expressive-code";
 import { remarkNpm2Yarn } from '@theguild/remark-npm2yarn'
-
-const { default: astroThemes } = await import("@lpdsgn/astro-themes");
+import astroThemes from "@lpdsgn/astro-themes"
 
 // https://astro.build/config
 export default defineConfig({

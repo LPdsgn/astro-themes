@@ -29,12 +29,12 @@ export default defineConfig((options) => {
 			// Ensure components directory exists
 			await fs.mkdir("dist/components", { recursive: true });
 
-			// Copy .astro files
+			// Copy .astro files and type declarations
 			const srcDir = "src/components";
 			const files = await fs.readdir(srcDir);
 
 			for (const file of files) {
-				if (file.endsWith(".astro")) {
+				if (file.endsWith(".astro") || file.endsWith(".d.ts")) {
 					await fs.copyFile(
 						path.join(srcDir, file),
 						path.join("dist/components", file)

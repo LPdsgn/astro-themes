@@ -1,6 +1,6 @@
 {
 	"name": "@lpdsgn/astro-themes",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Perfect dark mode in Astro with no flash. System preference, multiple themes, and sync across tabs.",
 	"type": "module",
 	"sideEffects": false,
@@ -9,7 +9,10 @@
 			"types": "./dist/index.d.ts",
 			"default": "./dist/index.js"
 		},
-		"./components": "./dist/components/index.js",
+		"./components": {
+			"types": "./dist/components/index.d.ts",
+			"default": "./dist/components/index.js"
+		},
 		"./components/ThemeProvider.astro": "./dist/components/ThemeProvider.astro",
 		"./client": {
 			"types": "./dist/client.d.ts",
@@ -29,7 +32,7 @@
 	],
 	"scripts": {
 		"dev": "tsup --watch",
-		"build": "tsup",
+		"build": "tsup && node -e \"require('fs').copyFileSync('src/components/index.d.ts', 'dist/components/index.d.ts')\"",
 		"prepublishOnly": "pnpm build"
 	},
 	"keywords": [
