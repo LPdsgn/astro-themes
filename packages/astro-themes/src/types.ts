@@ -48,8 +48,7 @@ export interface ThemeProviderProps {
 	enableSystem?: boolean;
 
 	/**
-	 * Whether to indicate to browsers which color scheme is used (dark or light)
-	 * for built-in UI like inputs and buttons
+	 * Whether to indicate to browsers which color scheme is used (dark or light) for built-in UI like inputs and buttons
 	 * @default true
 	 */
 	enableColorScheme?: boolean;

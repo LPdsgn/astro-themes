@@ -1,6 +1,6 @@
 {
 	"name": "@lpdsgn/astro-themes",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"description": "Perfect dark mode in Astro with no flash. System preference, multiple themes, and sync across tabs.",
 	"type": "module",
 	"sideEffects": false,
