@@ -2,8 +2,6 @@
 dist/
 .vercel/
 .playwright-mcp
-.changeset/*.md
-!.changeset/README.md
 
 # dependencies
 node_modules/
