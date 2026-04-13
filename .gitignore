@@ -1,7 +1,7 @@
 # build output
 dist/
 .vercel/
-
+.playwright-mcp
 .changeset/*.md
 !.changeset/README.md
 
@@ -37,6 +37,7 @@ Thumbs.db
 .idea/
 *.sublime-project
 *.sublime-workspace
+.claude
 
 # Temporary files
 *.tmp

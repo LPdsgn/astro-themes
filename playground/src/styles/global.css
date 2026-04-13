@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @plugin '@tailwindcss/typography';
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /* ============================================
    CSS Variables for Theming (shadcn-style)
    Minimal set: background, foreground, primary, muted, border
@@ -27,7 +29,7 @@
   --ring: oklch(0.708 0 0);
 }
 
-.dark {
+[data-theme="dark"] {
   /* Background & Foreground - inverted */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);

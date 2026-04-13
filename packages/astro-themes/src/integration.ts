@@ -11,7 +11,7 @@ const optionsSchema = z
 		 */
 		devToolbar: z.boolean().default(true),
 	})
-	.default({});
+	.default({ devToolbar: true });
 
 export const integration = defineIntegration({
 	name: "astro-themes",

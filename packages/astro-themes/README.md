@@ -5,6 +5,8 @@
 
 Perfect dark mode in Astro with no flash. An Astro integration that mirrors the behavior of [next-themes](https://github.com/pacocoursey/next-themes).
 
+Compatible with **Astro v5** and **Astro v6**.
+
 ## Features
 
 - ✅ **Perfect dark mode in 2 lines of code**
@@ -72,15 +74,33 @@ By default, `@lpdsgn/astro-themes` sets `data-theme` on the `<html>` element:
 
 ### TailwindCSS
 
-For Tailwind's class-based dark mode, set `attribute="class"`:
+If you use Tailwind's `dark:` variant, you need to tell Tailwind how to detect the active theme.
+
+**With the default `data-theme` attribute:**
+
+Tailwind v4:
+
+```css frame="code" title="src/styles/global.css" ins={3}
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+```
+
+Tailwind v3:
+
+```js frame="code" title="tailwind.config.js" ins={2-4}
+module.exports = {
+  darkMode: ['selector', '[data-theme="dark"]'],
+}
+```
+
+**With `attribute="class"`:**
 
 ```astro
 <ThemeProvider attribute="class" />
 ```
 
-Then configure Tailwind:
-
-**Tailwind v4:**
+Tailwind v4:
 
 ```css frame="code" title="src/styles/global.css" ins={3}
 @import 'tailwindcss';
@@ -88,7 +108,7 @@ Then configure Tailwind:
 @custom-variant dark (&:is(.dark *));
 ```
 
-**Tailwind v3:**
+Tailwind v3:
 
 ```js frame="code" title="tailwind.config.js" ins={2}
 module.exports = {
@@ -96,7 +116,7 @@ module.exports = {
 }
 ```
 
-Now use dark-mode classes:
+Then use dark-mode classes:
 
 ```html
 <h1 class="text-black dark:text-white">Hello</h1>

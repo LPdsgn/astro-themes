@@ -12,7 +12,7 @@ export default defineConfig((options) => {
 			"src/toolbar/app.ts",
 		],
 		format: ["esm"],
-		target: "node18",
+		target: "node20",
 		bundle: true,
 		dts: true,
 		sourcemap: true,
