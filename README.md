@@ -1,9 +1,12 @@
-# astro-themes
+<p align="center">
+  <img alt="astro-themes" src="https://shieldcn.dev/header/graph.svg?title=astro-themes&subtitle=Perfect+dark+mode+in+Astro+with+no+flash.&logo=astro&size=wide&mode=dark">
+</p>
+<p align="center">
+  <img alt="TypeScript" src="https://shieldcn.dev/badge/TypeScript.svg?variant=branded&amp;brand=typescript">
+  <img alt="Release + License" src="https://shieldcn.dev/group/github/release/lpdsgn/gsap-spa-manager+github/license/lpdsgn/gsap-spa-manager.svg?variant=branded">
+</p>
 
-![Astro](https://img.shields.io/badge/astro-%232C2052.svg?style=for-the-badge&logo=astro&logoColor=white)
-![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-
-Perfect dark mode in Astro with no flash. An Astro integration that mirrors the behavior of [next-themes](https://github.com/pacocoursey/next-themes).
+An Astro integration that mirrors the behavior of [next-themes](https://github.com/pacocoursey/next-themes).
 
 To see how to get started, check out the [package README](./packages/astro-themes/README.md)
 
